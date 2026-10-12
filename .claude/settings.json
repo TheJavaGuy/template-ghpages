@@ -1,0 +1,27 @@
+{
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "javascript-typescript@claude-code-workflows": true,
+    "github@claude-plugins-official": true,
+    "mattpocock-skills@mattpocock": true
+  },
+  "permissions": {
+    "allow": ["Bash(pnpm:*)", "Bash(vp:*)", "Bash(gh:*)", "Bash(git:*)"]
+  },
+  "extraKnownMarketplaces": {
+    "claude-code-workflows": {
+      "source": {
+        "source": "github",
+        "repo": "wshobson/agents"
+      },
+      "autoUpdate": true
+    },
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      },
+      "autoUpdate": true
+    }
+  }
+}
