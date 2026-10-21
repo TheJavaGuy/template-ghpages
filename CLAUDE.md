@@ -8,19 +8,21 @@ Template for small static web apps: Vite+, TypeScript, Tailwind CSS 4, DaisyUI 5
 - TypeScript 7 (type check only, `noEmit`). Plain `.js` modules are allowed (`allowJs`).
 - Tailwind CSS 4 via `@tailwindcss/vite`; DaisyUI 5 as `@plugin` in `src/style.css`.
 - Tests: Vitest through `vp test`, `happy-dom` environment, imports from `vite-plus/test`.
-- pnpm (pinned in `package.json` `devEngines`), Node per `.nvmrc`.
+- npm as bundled with Node; `package.json` `devEngines` requires npm >= 11.16. Node pinned exactly in `.nvmrc`.
+- `.npmrc` gates installs: `min-release-age=1`, `strict-allow-scripts=true`. Install scripts need an `allowScripts` entry in `package.json`.
 
 ## Commands
 
-| Task                       | Command                            |
-| -------------------------- | ---------------------------------- |
-| Dev server                 | `pnpm dev`                         |
-| Format + lint + type check | `pnpm check` (`--fix` to auto-fix) |
-| Tests                      | `pnpm test`                        |
-| Production build           | `pnpm build` (output in `dist/`)   |
-| Preview build              | `pnpm preview`                     |
+| Task                       | Command                                                |
+| -------------------------- | ------------------------------------------------------ |
+| Install                    | `npm install` (CI: `npm ci`)                           |
+| Dev server                 | `npm run dev`                                          |
+| Format + lint + type check | `npm run check` (`npm run check -- --fix` to auto-fix) |
+| Tests                      | `npm test`                                             |
+| Production build           | `npm run build` (output in `dist/`)                    |
+| Preview build              | `npm run preview`                                      |
 
-Run `pnpm check` and `pnpm test` before committing. CI runs exactly these plus `pnpm build`.
+Run `npm run check` and `npm test` before committing. CI runs exactly these plus `npm run build`.
 
 ## Layout
 
@@ -34,7 +36,7 @@ Run `pnpm check` and `pnpm test` before committing. CI runs exactly these plus `
 - `daisyui` (`.claude/skills/daisyui/`): the official daisyUI 5 reference. Use it for every component, theme, or colour question before guessing class names.
 - `good-css` (`.claude/skills/good-css/`): consult it before writing or reviewing CSS beyond Tailwind utilities (layout, spacing, show/hide, text and media rules).
 - `mattpocock-skills` plugin (enabled in `.claude/settings.json`): `grilling`, `tdd`, `diagnosing-bugs`, `code-review`, `prototype`, `research`, `codebase-design`, `domain-modeling`, `pr`, `wizard`, `writing-for-agents`.
-- Vendored skills are third-party files: never edit them in place; update with `pnpm dlx skills@latest update`.
+- Vendored skills are third-party files: never edit them in place; update with `npx skills@latest update`.
 
 ## Rules
 

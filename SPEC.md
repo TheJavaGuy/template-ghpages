@@ -12,16 +12,16 @@ there is no upstream-sync mechanism.
 
 ## 2. Stack (versions pinned at creation, 2026-10-11)
 
-| Component                                                       | Version                                   | Role                                                                                   |
-| --------------------------------------------------------------- | ----------------------------------------- | -------------------------------------------------------------------------------------- |
-| vite-plus (`vp`)                                                | 1.1.0                                     | dev server, build, lint (Oxlint), format (Oxfmt), test (Vitest), type check (tsgolint) |
-| TypeScript                                                      | 7.0.2                                     | type checking only (`noEmit`); plain `.js` allowed via `allowJs`                       |
-| Tailwind CSS + `@tailwindcss/vite`                              | 4.3.3                                     | utilities, theme tokens                                                                |
-| DaisyUI                                                         | 5.7.47                                    | components, two custom themes                                                          |
-| Vitest (via `vp test`)                                          | 5.0.3                                     | tests, `happy-dom` environment                                                         |
-| pnpm                                                            | 12.11.2                                   | package manager, pinned in `devEngines`                                                |
-| Node                                                            | `lts/*` in `.nvmrc`, `engines.node >= 24` | build-time only                                                                        |
-| `@fontsource-variable/fraunces`, `@fontsource-variable/manrope` | latest                                    | self-hosted fonts                                                                      |
+| Component                                                       | Version                                           | Role                                                                                   |
+| --------------------------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| vite-plus (`vp`)                                                | 1.1.0                                             | dev server, build, lint (Oxlint), format (Oxfmt), test (Vitest), type check (tsgolint) |
+| TypeScript                                                      | 7.0.2                                             | type checking only (`noEmit`); plain `.js` allowed via `allowJs`                       |
+| Tailwind CSS + `@tailwindcss/vite`                              | 4.3.3                                             | utilities, theme tokens                                                                |
+| DaisyUI                                                         | 5.7.47                                            | components, two custom themes                                                          |
+| Vitest (via `vp test`)                                          | 5.0.3                                             | tests, `happy-dom` environment                                                         |
+| npm                                                             | bundled with Node, `devEngines` `>=11.16.0`       | package manager; `.npmrc` sets `min-release-age=1`, `strict-allow-scripts=true`        |
+| Node                                                            | `v24.22.1` in `.nvmrc`, `engines.node >= 24.18.0` | build-time only                                                                        |
+| `@fontsource-variable/fraunces`, `@fontsource-variable/manrope` | latest                                            | self-hosted fonts                                                                      |
 
 Dependabot keeps all of the above current (weekly, minor+patch grouped).
 
@@ -41,14 +41,14 @@ Dependabot keeps all of the above current (weekly, minor+patch grouped).
 ├── vite.config.ts             vite-plus config: tailwind plugin, base from BASE_PATH, vitest env
 ├── tsconfig.json              strict + noUncheckedIndexedAccess + exactOptionalPropertyTypes + allowJs
 ├── package.json               scripts: dev, build, preview, check, test, lint, fmt
-├── pnpm-workspace.yaml        vp-generated catalog (vite -> @voidzero-dev/vite-plus-core)
+├── package-lock.json          npm lockfile; `overrides` maps vite -> @voidzero-dev/vite-plus-core
 ├── .npmrc .nvmrc .editorconfig .gitignore
 ├── .github/workflows/ci.yml  PRs + non-main pushes: install, vp check, vp test, vp build
 ├── .github/workflows/deploy.yml  main: same checks, build with BASE_PATH, deploy to Pages
 ├── .github/dependabot.yml
 ├── .claude/settings.json      enabledPlugins (incl. mattpocock-skills) + extraKnownMarketplaces + permission allowlist
 ├── .claude/skills/            vendored agent skills daisyui, good-css (skills CLI, copy mode), excluded from vp fmt
-├── skills-lock.json           skills CLI lock file for `pnpm dlx skills update`
+├── skills-lock.json           skills CLI lock file for `npx skills update`
 ├── CLAUDE.md                  stack, commands, conventions
 ├── DESIGN.md                  theme tokens, fonts, type scale
 ├── README.md                  project README; "Template usage" section removed by init
@@ -98,7 +98,7 @@ loudly if an expected replacement count is zero.
 
 ## 7. Bootstrap (`scripts/init.mjs`)
 
-Dependency-free Node ESM. Runs after `pnpm install` (it needs `vp fmt`).
+Dependency-free Node ESM. Runs after `npm install` (it needs `vp fmt`).
 
 1. Derive `<owner>/<name>` from `git remote get-url origin` (ssh or https);
    fallback owner `TheJavaGuy` + directory basename, with a warning.
@@ -106,7 +106,7 @@ Dependency-free Node ESM. Runs after `pnpm install` (it needs `vp fmt`).
 3. Prompt once for a one-line description (non-empty).
 4. Apply the substitutions in §6.
 5. Set `package.json` `author` to `{ name: git config user.name, url: https://thejavaguy.org }`.
-   Then run `pnpm exec vp fmt` on the substituted files, since a different
+   Then run `npm exec -- vp fmt` on the substituted files, since a different
    name/description length changes Oxfmt line wrapping.
 6. Delete the "Template usage" section of `README.md` (between
    `<!-- template:start -->` and `<!-- template:end -->`).
@@ -120,14 +120,14 @@ Dependency-free Node ESM. Runs after `pnpm install` (it needs `vp fmt`).
 
 ```
 gh repo create NAME --template TheJavaGuy/template-ghpages --public --clone \
-  && cd NAME && pnpm install && node scripts/init.mjs && git push
+  && cd NAME && npm install && node scripts/init.mjs && git push
 ```
 
 ## 9. CI/CD
 
 - `ci.yml`: `pull_request` + `push` to branches other than `main`.
-  Steps: checkout v7, pnpm/action-setup v6, setup-node v7 (`node-version-file: .nvmrc`, pnpm cache),
-  `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm test`, `pnpm build`.
+  Steps: checkout v7, setup-node v7 (`node-version-file: .nvmrc`, npm cache),
+  `npm ci`, `npm run check`, `npm test`, `npm run build`.
 - `deploy.yml`: `push` to `main` + `workflow_dispatch`. Same steps, build with
   `BASE_PATH=/<repo>/` and `VITE_CLARITY_ID=${{ vars.VITE_CLARITY_ID }}`,
   then configure-pages v6, upload-pages-artifact v5 (`dist`), deploy-pages v5.
@@ -137,7 +137,7 @@ gh repo create NAME --template TheJavaGuy/template-ghpages --public --clone \
 
 ## 10. Verification (definition of done)
 
-1. `pnpm check`, `pnpm test`, `pnpm build` pass locally on the template.
+1. `npm run check`, `npm test`, `npm run build` pass locally on the template.
 2. Template pushed to `TheJavaGuy/template-ghpages`, marked as template, Pages
    enabled, deploy workflow green, demo URL returns HTTP 200.
 3. Dry run: a throwaway repo created with the flow in §8; `init.mjs` output

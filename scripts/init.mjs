@@ -2,7 +2,7 @@
 /**
  * One-shot bootstrap for projects created from TheJavaGuy/template-ghpages.
  *
- * Run once right after cloning and `pnpm install`:
+ * Run once right after cloning and `npm install`:
  *   node scripts/init.mjs [--description "One line"]
  *
  * Dependency-free. Deletes itself and the template-only files when done.
@@ -118,11 +118,11 @@ function setAuthor(packageJsonText) {
 function formatSubstitutedFiles() {
   if (!existsSync(join(root, "node_modules", ".bin", "vp"))) {
     warn(
-      "node_modules missing; run `pnpm install && pnpm check --fix` and amend the bootstrap commit",
+      "node_modules missing; run `npm install && npm run check -- --fix` and amend the bootstrap commit",
     );
     return;
   }
-  const fmt = tryRun("pnpm", ["exec", "vp", "fmt", ...SUBSTITUTED_FILES]);
+  const fmt = tryRun("npm", ["exec", "--", "vp", "fmt", ...SUBSTITUTED_FILES]);
   if (fmt.ok) log("formatted substituted files (vp fmt)");
   else warn(`vp fmt failed: ${fmt.output}`);
 }
