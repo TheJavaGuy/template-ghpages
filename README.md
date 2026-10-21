@@ -68,7 +68,7 @@ Themes, tokens, fonts and helper classes are documented in [DESIGN.md](DESIGN.md
 
 `.claude/settings.json` is committed and gives every clone the same agent setup:
 
-- Plugins (`enabledPlugins`, keyed `name@marketplace`): `typescript-lsp@claude-plugins-official`, `github@claude-plugins-official`, `javascript-typescript@claude-code-workflows`, `mattpocock-skills@mattpocock`. The non-official marketplaces `claude-code-workflows` (wshobson/agents) and `mattpocock` (mattpocock/skills) are registered in `extraKnownMarketplaces` with auto-update, so Claude Code installs the plugins on the first session after you trust the workspace.
+- Plugins (`enabledPlugins`, keyed `name@marketplace`): `typescript-lsp@claude-plugins-official`, `javascript-typescript@claude-code-workflows`, `mattpocock-skills@mattpocock`. The non-official marketplaces `claude-code-workflows` (wshobson/agents) and `mattpocock` (mattpocock/skills) are registered in `extraKnownMarketplaces` with auto-update, so Claude Code installs the plugins on the first session after you trust the workspace.
 - Vendored skills in `.claude/skills/`, tracked in `skills-lock.json`: [`daisyui`](https://daisyui.com/SKILL.md) (official, from saadeghi/daisyui) and [`good-css`](https://skills.sh/vojtaholik/good-css). These files are third-party content and are excluded from `vp fmt`.
 
 Manage vendored skills with the [`skills`](https://skills.sh) CLI through pnpm. `npx` fails in this repo because `package.json` pins pnpm via `devEngines`:

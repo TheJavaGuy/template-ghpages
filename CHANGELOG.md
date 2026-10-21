@@ -13,6 +13,10 @@ not carry this file.
 - Plugin keys in `.claude/settings.json` use the full `name@marketplace` form; `claude-code-workflows` marketplace registered.
 - README section "Claude Code" documenting plugins, skills, and the `pnpm dlx skills` workflow.
 
+### Removed
+
+- `github` plugin no longer enabled in project settings.
+
 ## [1.0.0] - 2026-10-11
 
 ### Added
