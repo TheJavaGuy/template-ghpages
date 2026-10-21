@@ -43,6 +43,8 @@ Run `npm run check` and `npm test` before committing. CI runs exactly these plus
 - Use DaisyUI components and the theme tokens; do not hardcode colours.
 - Fonts are self-hosted via `@fontsource-variable`. Never add Google Fonts or other third-party `<link>`/`<script>` tags.
 - Third-party scripts load only after consent via `src/consent.ts`. Analytics id comes from `VITE_CLARITY_ID` (`.env.local` locally, repository variable in CI); the feature is inert when unset.
+- Tailwind scans only `index.html` and `src/` (`source(none)` + `@source` in `src/style.css`). Markup in a new location needs its own `@source`, or its classes are silently missing.
+- The build inlines the CSS bundle into the HTML (`inlineCss` in `vite.config.ts`) and never inlines fonts. Keep the CSS small; it is on every page load.
 - Never hardcode the `/repo-name/` base path. `deploy.yml` sets `BASE_PATH`; `vite.config.ts` reads it. Use root-relative URLs (`/favicon.svg`) in `index.html` and let Vite rewrite them.
 - Dependencies are pinned exact (`save-exact`); Dependabot proposes updates weekly. Do not loosen ranges.
 - Deployment: push to `main` triggers `.github/workflows/deploy.yml` (GitHub Pages). Nothing is deployed from branches.

@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* Scan only real markup. Auto-detection also reads .claude/skills/daisyui/ and emits every component. */
+@import "tailwindcss" source(none);
+@source "../index.html";
+@source "./";
 @import "@fontsource-variable/manrope";
 @import "@fontsource-variable/fraunces/full.css";
 
