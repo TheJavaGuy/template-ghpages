@@ -8,11 +8,11 @@ Live: https://thejavaguy.github.io/template-ghpages/
 
 ## Template usage
 
-Create a new project from this template (requires [`gh`](https://cli.github.com/) logged in, Node 24+, pnpm):
+Create a new project from this template (requires [`gh`](https://cli.github.com/) logged in, Node 24.18+):
 
 ```sh
 gh repo create NAME --template TheJavaGuy/template-ghpages --public --clone \
-  && cd NAME && pnpm install && node scripts/init.mjs && git push
+  && cd NAME && npm install && node scripts/init.mjs && git push
 ```
 
 `scripts/init.mjs` runs once and then deletes itself. It:
@@ -31,21 +31,23 @@ After the first push, the deploy workflow publishes the site. If Pages could not
 
 Then: replace `public/og-image.png` (1200x630) and the favicons, and, if you want analytics, set the repository variable `VITE_CLARITY_ID` (Settings > Secrets and variables > Actions > Variables).
 
-Updating the template itself: edit, run `pnpm check && pnpm test && pnpm build`, note the change in `CHANGELOG.md`, push to `main`. The template deploys itself as the live demo above. Derived projects do not receive template updates.
+Updating the template itself: edit, run `npm run check && npm test && npm run build`, note the change in `CHANGELOG.md`, push to `main`. The template deploys itself as the live demo above. Derived projects do not receive template updates.
 <!-- template:end -->
 
 ## Development
 
-Requirements: Node per `.nvmrc` (`nvm install` reads it) and pnpm 12 (`corepack enable` or `brew install pnpm`).
+Requirements: Node per `.nvmrc` (`nvm install` reads it). npm comes with it; `devEngines` requires npm 11.16 or newer (Node 24.18+).
 
 ```sh
-pnpm install
-pnpm dev        # dev server with HMR
-pnpm check      # format + lint + type check (add --fix to apply fixes)
-pnpm test       # Vitest
-pnpm build      # production build into dist/
-pnpm preview    # serve dist/
+npm install
+npm run dev        # dev server with HMR
+npm run check      # format + lint + type check (npm run check -- --fix to apply fixes)
+npm test           # Vitest
+npm run build      # production build into dist/
+npm run preview    # serve dist/
 ```
+
+`.npmrc` only installs versions published at least one day ago (`min-release-age=1`) and fails on any dependency install script not listed in `package.json` `allowScripts` (`strict-allow-scripts=true`). `fsevents` is denied there: its registry metadata declares a `node-gyp rebuild` the package cannot run, and its prebuilt binary works without it.
 
 ## Deployment
 
@@ -71,12 +73,12 @@ Themes, tokens, fonts and helper classes are documented in [DESIGN.md](DESIGN.md
 - Plugins (`enabledPlugins`, keyed `name@marketplace`): `typescript-lsp@claude-plugins-official`, `javascript-typescript@claude-code-workflows`, `mattpocock-skills@mattpocock`. The non-official marketplaces `claude-code-workflows` (wshobson/agents) and `mattpocock` (mattpocock/skills) are registered in `extraKnownMarketplaces` with auto-update, so Claude Code installs the plugins on the first session after you trust the workspace.
 - Vendored skills in `.claude/skills/`, tracked in `skills-lock.json`: [`daisyui`](https://daisyui.com/SKILL.md) (official, from saadeghi/daisyui) and [`good-css`](https://skills.sh/vojtaholik/good-css). These files are third-party content and are excluded from `vp fmt`.
 
-Manage vendored skills with the [`skills`](https://skills.sh) CLI through pnpm. `npx` fails in this repo because `package.json` pins pnpm via `devEngines`:
+Manage vendored skills with the [`skills`](https://skills.sh) CLI:
 
 ```sh
-pnpm dlx skills@latest list
-pnpm dlx skills@latest update                                   # refresh to latest upstream
-pnpm dlx skills@latest add <owner>/<repo> -a claude-code -y     # add another skill
+npx skills@latest list
+npx skills@latest update                                   # refresh to latest upstream
+npx skills@latest add <owner>/<repo> -a claude-code -y     # add another skill
 ```
 
 Project conventions for agents are in [CLAUDE.md](CLAUDE.md).

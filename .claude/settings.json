@@ -1,6 +1,6 @@
 {
   "permissions": {
-    "allow": ["Bash(pnpm:*)", "Bash(vp:*)", "Bash(gh:*)", "Bash(git:*)"]
+    "allow": ["Bash(npm:*)", "Bash(vp:*)", "Bash(gh:*)", "Bash(git:*)"]
   },
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,

@@ -13,6 +13,12 @@ not carry this file.
 - Plugin keys in `.claude/settings.json` use the full `name@marketplace` form; `claude-code-workflows` marketplace registered.
 - README section "Claude Code" documenting plugins, skills, and the `pnpm dlx skills` workflow.
 
+### Changed
+
+- npm replaces pnpm: `package-lock.json`, `npm ci` in CI, `devEngines` requires npm `>=11.16.0`, `engines.node` `>=24.18.0`, `.nvmrc` `v24.22.1`. `npx` works in the repo again (the pnpm pin made it fail with `EBADDEVENGINES`).
+- `.npmrc` adds `min-release-age=1` and `strict-allow-scripts=true`; `package.json` `allowScripts` denies `fsevents`.
+- `skills` CLI runs via `npx skills@latest`.
+
 ### Removed
 
 - `github` plugin no longer enabled in project settings.
