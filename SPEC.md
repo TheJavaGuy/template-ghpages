@@ -34,11 +34,11 @@ Dependabot keeps all of the above current (weekly, minor+patch grouped).
 │   ├── main.ts                entry: imports style, wires theme + consent
 │   ├── theme.ts               light/dark toggle, localStorage "theme"
 │   ├── consent.ts             consent banner, loads Clarity only after consent
-│   ├── style.css              Tailwind + DaisyUI + tjg-light/tjg-dark + fonts + type scale
+│   ├── style.css              Tailwind (scans index.html + src/ only) + DaisyUI + tjg-light/tjg-dark + fonts + type scale
 │   └── main.test.ts           smoke test: loads index.html, asserts title + toggle
 ├── public/                    favicon.svg, favicon-32.png, apple-touch-icon.png, og-image.png
 ├── scripts/init.mjs           one-shot bootstrap (template-only, self-deleting)
-├── vite.config.ts             vite-plus config: tailwind plugin, base from BASE_PATH, vitest env
+├── vite.config.ts             vite-plus config: tailwind plugin, CSS inlined into HTML, base from BASE_PATH, vitest env
 ├── tsconfig.json              strict + noUncheckedIndexedAccess + exactOptionalPropertyTypes + allowJs
 ├── package.json               scripts: dev, build, preview, check, test, lint, fmt
 ├── package-lock.json          npm lockfile; `overrides` maps vite -> @voidzero-dev/vite-plus-core

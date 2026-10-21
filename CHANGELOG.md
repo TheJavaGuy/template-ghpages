@@ -15,6 +15,7 @@ not carry this file.
 
 ### Changed
 
+- Faster first paint: Tailwind scans only `index.html` and `src/` (auto-detection read the vendored daisyUI docs and emitted every component; CSS 400 KB -> 62 KB), fonts are never inlined, and the build inlines the CSS into `index.html`. Mobile Lighthouse: FCP 1542 -> 680 ms, LCP 1542 -> 721 ms (devtools throttling); score 97 -> 99.
 - npm replaces pnpm: `package-lock.json`, `npm ci` in CI, `devEngines` requires npm `>=11.16.0`, `engines.node` `>=24.18.0`, `.nvmrc` `v24.22.1`. `npx` works in the repo again (the pnpm pin made it fail with `EBADDEVENGINES`).
 - `.npmrc` adds `min-release-age=1` and `strict-allow-scripts=true`; `package.json` `allowScripts` denies `fsevents`.
 - `skills` CLI runs via `npx skills@latest`.
